@@ -8,14 +8,20 @@ class Hand
     end
 
     def check_pairs
-        values = hand.map(&:val).uniq
+        values = hand.map(&:val)
+        count = values.max_by { |val| values.count(val) }
         if values.length == 4
-            return 1
+            1
+        elsif values.length == 3
+            2
+        else
+            false
+        end
     end
 
     def three_of_a_kind
         values = hand.map(&:val).uniq
-        values.length == 3 && check_pairs == false
+        values.length == 3
     end
 
     def four_of_a_kind
@@ -40,7 +46,7 @@ class Hand
         return 9 if check_flush && check_straights == 13
         return 8 if check_flush && check_flush
         return 7 if four_of_a_kind
-        return 6 if three_of_a_kind && check_pairs
+        return 6 if three_of_a_kind && check_pairs == 1
         return 5 if check_flush
         return 4 if check_straights
         return 3 if three_of_a_kind
